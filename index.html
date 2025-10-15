@@ -111,8 +111,9 @@
     .trusted-container { max-width: 1200px; margin: 0 auto; text-align: center; }
     .trusted h3 { font-size: 1rem; text-transform: uppercase; color: var(--gray); letter-spacing: 2px; margin-bottom: 1.5rem; }
     .logos { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1.5rem; align-items: center; justify-items: center; }
-    .logo-item { color: #0b0b0b; opacity: 0.7; transition: var(--transition); font-size: 2rem; filter: grayscale(100%); }
-    .logo-item:hover { opacity: 1; filter: grayscale(0%); transform: translateY(-2px); }
+    .logo-item { display: flex; align-items: center; justify-content: center; }
+    .logo-item img, .logo-item svg { height: 28px; max-width: 140px; filter: grayscale(100%); opacity: 0.75; transition: var(--transition); }
+    .logo-item:hover img, .logo-item:hover svg { filter: grayscale(0%); opacity: 1; transform: translateY(-2px); }
 
     /* Products Section */
     .products-section { padding: 5rem 2rem; background: var(--light); }
@@ -372,11 +373,21 @@
       <div class="trusted-container" data-aos="fade-up">
         <h3>Trusted by teams at</h3>
         <div class="logos">
-          <div class="logo-item" aria-label="Apple"><i class="fab fa-apple"></i></div>
-          <div class="logo-item" aria-label="Microsoft"><i class="fab fa-microsoft"></i></div>
-          <div class="logo-item" aria-label="Google"><i class="fab fa-google"></i></div>
-          <div class="logo-item" aria-label="Adobe"><i class="fab fa-adobe"></i></div>
-          <div class="logo-item" aria-label="Netflix"><i class="fab fa-netflix"></i></div>
+          <div class="logo-item" aria-label="Apple">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" loading="lazy" />
+          </div>
+          <div class="logo-item" aria-label="Microsoft">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" loading="lazy" />
+          </div>
+          <div class="logo-item" aria-label="Google">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" loading="lazy" />
+          </div>
+          <div class="logo-item" aria-label="Adobe">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Corporate_logo.svg" alt="Adobe" loading="lazy" />
+          </div>
+          <div class="logo-item" aria-label="Netflix">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix" loading="lazy" />
+          </div>
         </div>
       </div>
     </section>
@@ -575,7 +586,7 @@
 
   <!-- Toast Notification -->
   <div class="toast" id="toast">
-    <i class="fas fa-check-circle"></i>
+    <div id="toastLottie" style="width:24px;height:24px"></div>
     <span id="toastMessage">Added to cart successfully!</span>
   </div>
 
@@ -593,6 +604,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
   <!-- Motion One (Framer Motion-like for Web) -->
   <script src="https://cdn.jsdelivr.net/npm/motion@10.16.4/dist/motion.min.js"></script>
+  <!-- GSAP ScrollTo for smooth fallback -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
   <script>
     // =====================================
@@ -738,7 +751,19 @@
 
     function toggleCart() {
       const cartDropdown = document.getElementById('cartDropdown');
-      cartDropdown.classList.toggle('active');
+      const isOpen = cartDropdown.classList.contains('active');
+      if (isOpen) {
+        if (window.gsap) {
+          gsap.to(cartDropdown, { x: 420, duration: 0.3, ease: 'power2.in', onComplete: () => { cartDropdown.classList.remove('active'); gsap.set(cartDropdown, { x: 0 }); } });
+        } else {
+          cartDropdown.classList.remove('active');
+        }
+      } else {
+        cartDropdown.classList.add('active');
+        if (window.gsap) {
+          gsap.fromTo(cartDropdown, { x: 420 }, { x: 0, duration: 0.4, ease: 'power3.out' });
+        }
+      }
     }
 
     // =====================================
@@ -817,7 +842,29 @@
       const toastMessage = document.getElementById('toastMessage');
       toastMessage.textContent = message;
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
+      // Motion One micro animation
+      if (window.Motion && Motion.animate) {
+        Motion.animate(toast, { transform: ['translateX(24px)', 'translateX(0)'], opacity: [0, 1] }, { duration: 0.4, easing: 'ease-out' });
+      }
+      // Lottie check animation
+      const toastLottie = document.getElementById('toastLottie');
+      if (toastLottie && window.lottie) {
+        window.lottie.destroy('toastLottieAnim');
+        window.lottie.loadAnimation({
+          name: 'toastLottieAnim',
+          container: toastLottie,
+          renderer: 'svg',
+          loop: false,
+          autoplay: true,
+          path: 'https://assets2.lottiefiles.com/packages/lf20_pqnfmone.json'
+        });
+      }
+      setTimeout(() => {
+        if (window.Motion && Motion.animate) {
+          Motion.animate(toast, { transform: ['translateX(0)', 'translateX(24px)'], opacity: [1, 0] }, { duration: 0.3, easing: 'ease-in' });
+        }
+        toast.classList.remove('show');
+      }, 3000);
     }
 
     function toggleMobileMenu() {
@@ -980,6 +1027,7 @@
       // Setup filters & render
       setupFilters();
       renderProducts(products);
+      filterProducts();
 
       // Price range live label
       const priceRange = document.getElementById('priceRange');
@@ -992,10 +1040,11 @@
 
       // Hero buttons
       document.getElementById('browseBtn')?.addEventListener('click', () => {
-        // Scroll to products
         const container = document.querySelector('#smooth-scroll');
         const productsSection = document.querySelector('.products-section');
-        if (locoScroll) locoScroll.scrollTo(productsSection, { offset: -80 }); else productsSection.scrollIntoView({ behavior: 'smooth' });
+        if (locoScroll) locoScroll.scrollTo(productsSection, { offset: -80 });
+        else if (window.gsap && window.ScrollToPlugin) gsap.to(window, { duration: 0.8, scrollTo: productsSection, ease: 'power2.out' });
+        else productsSection.scrollIntoView({ behavior: 'smooth' });
       });
       document.getElementById('demoBtn')?.addEventListener('click', () => showToast('Playing demo reel...'));
 
