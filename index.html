@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VFXHUB - Professional Video Assets Marketplace</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <!-- AOS (Animate On Scroll) -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <!-- Locomotive Scroll CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.css" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #6B46C1;
+      --primary-dark: #553C9A;
+      --secondary: #2563EB;
+      --accent: #EC4899;
+      --dark: #0F172A;
+      --dark-light: #1E293B;
+      --gray: #64748B;
+      --light: #F8FAFC;
+      --white: #FFFFFF;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+      --shadow-xl: 0 20px 60px rgba(0,0,0,0.2);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html, body { height: auto; background: var(--light); color: var(--dark); overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; }
+
+    /* Navbar */
+    .navbar { position: fixed; top: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); z-index: 1000; transition: var(--transition); }
+    .navbar.scrolled { background: rgba(255, 255, 255, 0.98); box-shadow: var(--shadow-md); }
+    .nav-container { max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    .nav-left { display: flex; align-items: center; gap: 3rem; }
+    .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+    .nav-menu { display: flex; gap: 2rem; list-style: none; }
+    .nav-menu a { text-decoration: none; color: var(--dark); font-weight: 500; position: relative; transition: var(--transition); }
+    .nav-menu a:hover { color: var(--primary); }
+    .nav-menu a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.3s; }
+    .nav-menu a:hover::after { width: 100%; }
+    .dropdown { position: relative; }
+    .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 200px; box-shadow: var(--shadow-lg); border-radius: 12px; padding: 1rem 0; margin-top: 1rem; }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown-content a { display: block; padding: 0.75rem 1.5rem; color: var(--dark); text-decoration: none; transition: var(--transition); }
+    .dropdown-content a:hover { background: var(--light); color: var(--primary); }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .search-bar { position: relative; }
+    .search-bar input { padding: 0.75rem 1rem 0.75rem 2.5rem; border: 2px solid var(--light); border-radius: 50px; width: 250px; font-size: 0.9rem; transition: var(--transition); }
+    .search-bar input:focus { outline: none; border-color: var(--primary); width: 300px; }
+    .search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray); }
+    .cart-icon { position: relative; cursor: pointer; font-size: 1.2rem; color: var(--dark); transition: var(--transition); }
+    .cart-icon:hover { color: var(--primary); }
+    .cart-count { position: absolute; top: -8px; right: -8px; background: var(--accent); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50px; }
+    .btn-login { padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .btn-login:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .mobile-menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+    /* Smooth scroll container wrapper (Locomotive) */
+    #smooth-scroll[data-scroll-container] { position: relative; }
+
+    /* Hero Section */
+    .hero { margin-top: 80px; min-height: 100vh; background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%); position: relative; display: flex; align-items: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; opacity: 0.12; pointer-events: none; }
+    .floating-card { position: absolute; background: rgba(255, 255, 255, 0.06); border-radius: 12px; backdrop-filter: blur(10px); }
+    .hero-content { max-width: 1400px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: white; margin-bottom: 1.25rem; }
+    .hero p { font-size: 1.15rem; color: rgba(255, 255, 255, 0.85); margin-bottom: 2rem; }
+    .hero-buttons { display: flex; gap: 1rem; }
+    .btn-primary { padding: 1rem 2rem; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(107, 70, 193, 0.3); }
+    .btn-secondary { padding: 1rem 2rem; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); color: white; border: 2px solid rgba(255, 255, 255, 0.2); border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+
+    /* Three.js canvas overlay */
+    .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+    /* Lottie container */
+    .lottie-hero { position: absolute; right: 4vw; bottom: 8vh; width: min(320px, 35vw); z-index: 2; opacity: 0.9; }
+
+    /* Categories Section */
+    .categories { padding: 5rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-header h2 { font-size: 2.2rem; margin-bottom: 0.75rem; color: var(--dark); }
+    .section-header p { color: var(--gray); font-size: 1.05rem; }
+    .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+    .category-card { background: white; padding: 2rem; border-radius: 16px; text-align: center; cursor: pointer; transition: var(--transition); border: 2px solid transparent; position: relative; overflow: hidden; }
+    .category-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transition: transform 0.3s; }
+    .category-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+    .category-card:hover::before { transform: scaleX(1); }
+    .category-icon { font-size: 2.75rem; margin-bottom: 1rem; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .category-name { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--dark); }
+    .category-count { color: var(--gray); font-size: 0.9rem; }
+
+    /* Trusted By */
+    .trusted { background: white; padding: 3rem 2rem; }
+    .trusted-container { max-width: 1200px; margin: 0 auto; text-align: center; }
+    .trusted h3 { font-size: 1rem; text-transform: uppercase; color: var(--gray); letter-spacing: 2px; margin-bottom: 1.5rem; }
+    .logos { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1.5rem; align-items: center; justify-items: center; }
+    .logo-item { color: #0b0b0b; opacity: 0.7; transition: var(--transition); font-size: 2rem; filter: grayscale(100%); }
+    .logo-item:hover { opacity: 1; filter: grayscale(0%); transform: translateY(-2px); }
+
+    /* Products Section */
+    .products-section { padding: 5rem 2rem; background: var(--light); }
+    .products-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 250px 1fr; gap: 2rem; }
+
+    /* Filters Sidebar */
+    .filters-sidebar { background: white; padding: 1.5rem; border-radius: 16px; height: fit-content; position: sticky; top: 100px; }
+    .filter-section { margin-bottom: 2rem; }
+    .filter-title { font-weight: 600; margin-bottom: 1rem; color: var(--dark); }
+    .filter-option { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer; }
+    .filter-option input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+    .filter-option label { cursor: pointer; color: var(--gray); transition: var(--transition); }
+    .filter-option:hover label { color: var(--dark); }
+    .price-range { margin-top: 1rem; }
+    .price-range input[type="range"] { width: 100%; accent-color: var(--primary); }
+    .price-values { display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--gray); font-size: 0.9rem; }
+
+    /* Product Grid */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .product-card { background: white; border-radius: 16px; overflow: hidden; cursor: pointer; transition: var(--transition); position: relative; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); }
+    .product-preview { position: relative; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); overflow: hidden; }
+    .product-badge { position: absolute; top: 1rem; right: 1rem; background: var(--accent); color: white; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
+    .product-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+    .product-card:hover .product-video { display: block; }
+    .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(255, 255, 255, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary); transition: var(--transition); }
+    .product-card:hover .play-icon { opacity: 0; }
+    .product-info { padding: 1.5rem; }
+    .product-category { color: var(--primary); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+    .product-title { font-size: 1.1rem; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; }
+    .product-description { color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .product-meta { display: flex; justify-content: space-between; align-items: center; }
+    .product-rating { display: flex; align-items: center; gap: 0.25rem; }
+    .star { color: var(--warning); font-size: 0.9rem; }
+    .rating-count { color: var(--gray); font-size: 0.8rem; margin-left: 0.5rem; }
+    .product-price { display: flex; align-items: center; gap: 0.5rem; }
+    .price-current { font-size: 1.25rem; font-weight: 700; color: var(--dark); }
+    .price-original { font-size: 0.9rem; color: var(--gray); text-decoration: line-through; }
+    .product-actions { display: flex; gap: 0.5rem; margin-top: 1rem; opacity: 0; transform: translateY(10px); transition: var(--transition); }
+    .product-card:hover .product-actions { opacity: 1; transform: translateY(0); }
+    .btn-add-cart { flex: 1; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .btn-add-cart:hover { background: var(--primary-dark); }
+    .btn-quick-view { padding: 0.75rem; background: var(--light); color: var(--dark); border: none; border-radius: 8px; cursor: pointer; transition: var(--transition); }
+    .btn-quick-view:hover { background: var(--gray); color: white; }
+
+    /* Shopping Cart Dropdown */
+    .cart-dropdown { position: fixed; top: 80px; right: -400px; width: 400px; background: white; box-shadow: var(--shadow-xl); border-radius: 16px; padding: 1.5rem; transition: right 0.3s ease; z-index: 999; max-height: 80vh; overflow-y: auto; }
+    .cart-dropdown.active { right: 2rem; }
+    .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--light); }
+    .cart-title { font-size: 1.25rem; font-weight: 600; }
+    .cart-close { font-size: 1.5rem; cursor: pointer; color: var(--gray); transition: var(--transition); }
+    .cart-close:hover { color: var(--dark); }
+    .cart-items { margin-bottom: 1.5rem; }
+    .cart-item { display: flex; gap: 1rem; margin-bottom: 1rem; padding: 1rem; background: var(--light); border-radius: 12px; }
+    .cart-item-image { width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; }
+    .cart-item-details { flex: 1; }
+    .cart-item-name { font-weight: 600; margin-bottom: 0.25rem; }
+    .cart-item-price { color: var(--primary); font-weight: 600; }
+    .cart-item-remove { color: var(--danger); cursor: pointer; }
+    .cart-summary { padding-top: 1rem; border-top: 2px solid var(--light); }
+    .cart-total { display: flex; justify-content: space-between; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600; }
+    .cart-actions { display: flex; gap: 1rem; }
+    .btn-view-cart, .btn-checkout { flex: 1; padding: 0.75rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .btn-view-cart { background: var(--light); color: var(--dark); }
+    .btn-checkout { background: var(--primary); color: white; }
+
+    /* Newsletter Section */
+    .newsletter { padding: 5rem 2rem; background: linear-gradient(135deg, var(--primary), var(--accent)); text-align: center; }
+    .newsletter-content { max-width: 600px; margin: 0 auto; }
+    .newsletter h2 { color: white; font-size: 2.2rem; margin-bottom: 1rem; }
+    .newsletter p { color: rgba(255, 255, 255, 0.9); font-size: 1.05rem; margin-bottom: 2rem; }
+    .newsletter-form { display: flex; gap: 1rem; max-width: 500px; margin: 0 auto; }
+    .newsletter-form input { flex: 1; padding: 1rem; border: none; border-radius: 50px; font-size: 1rem; }
+    .newsletter-form button { padding: 1rem 2rem; background: white; color: var(--primary); border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .newsletter-form button:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+    /* Footer */
+    .footer { background: var(--dark); color: white; padding: 3rem 2rem 1rem; }
+    .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .footer-section h4 { margin-bottom: 1rem; }
+    .footer-section ul { list-style: none; }
+    .footer-section ul li { margin-bottom: 0.5rem; }
+    .footer-section a { color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: var(--transition); }
+    .footer-section a:hover { color: white; }
+    .social-links { display: flex; gap: 1rem; margin-top: 1rem; }
+    .social-links a { width: 40px; height: 40px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .social-links a:hover { background: var(--primary); }
+    .footer-bottom { padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; color: rgba(255, 255, 255, 0.5); }
+
+    /* Modal */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); z-index: 2000; padding: 2rem; overflow-y: auto; }
+    .modal.active { display: flex; align-items: center; justify-content: center; }
+    .modal-content { background: white; border-radius: 20px; max-width: 1200px; width: 100%; max-height: 90vh; overflow: hidden; position: relative; }
+    .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; width: 40px; height: 40px; background: var(--light); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1; transition: var(--transition); }
+    .modal-close:hover { background: var(--danger); color: white; }
+    .product-modal { display: grid; grid-template-columns: 1fr 1fr; height: 600px; }
+    .modal-preview { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; }
+    .modal-info { padding: 2rem; overflow-y: auto; }
+    .modal-info h2 { font-size: 2rem; margin-bottom: 1rem; }
+    .modal-rating { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .modal-price { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem; }
+    .modal-features { list-style: none; margin-bottom: 2rem; }
+    .modal-features li { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; color: var(--gray); }
+    .modal-features li i { color: var(--success); }
+    .modal-actions { display: flex; gap: 1rem; }
+
+    /* Mobile Menu */
+    @media (max-width: 768px) {
+      .nav-menu { display: none; }
+      .search-bar input { width: 150px; }
+      .mobile-menu-toggle { display: block; }
+    }
+
+    .mobile-menu { position: fixed; top: 0; left: -100%; width: 80%; height: 100vh; background: white; z-index: 2001; transition: left 0.3s ease; padding: 2rem; }
+    .mobile-menu.active { left: 0; }
+    .mobile-menu-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 2000; }
+    .mobile-menu-overlay.active { display: block; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 2rem; right: -400px; background: var(--success); color: white; padding: 1rem 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; transition: right 0.3s ease; z-index: 3000; }
+    .toast.show { right: 2rem; }
+
+    /* Responsive Tweaks */
+    @media (max-width: 1024px) {
+      .products-container { grid-template-columns: 1fr; }
+      .filters-sidebar { display: none; }
+      .product-modal { grid-template-columns: 1fr; }
+      .modal-preview { height: 300px; }
+      .lottie-hero { position: static; width: 220px; margin: 1rem auto 0; }
+      .hero { padding-top: 1.5rem; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .category-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      .products-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+      .cart-dropdown { width: 90%; right: -100%; }
+      .cart-dropdown.active { right: 5%; }
+      .newsletter-form { flex-direction: column; }
+      .footer-content { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar (kept outside smooth scroller) -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-left">
+        <div class="logo" id="homeLogo">VFXHUB</div>
+        <ul class="nav-menu">
+          <li class="dropdown">
+            <a href="#">Products <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-content">
+              <a href="#"><i class="fas fa-palette"></i> Color Grading</a>
+              <a href="#"><i class="fas fa-video"></i> Transitions</a>
+              <a href="#"><i class="fas fa-cube"></i> 3D Texts</a>
+              <a href="#"><i class="fas fa-magic"></i> Effects</a>
+              <a href="#"><i class="fas fa-layer-group"></i> Compositions</a>
+            </div>
+          </li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search effects..." />
+        </div>
+        <div class="cart-icon" onclick="toggleCart()">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </div>
+        <button class="btn-login">Sign In</button>
+        <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="logo" style="margin-bottom: 2rem;">VFXHUB</div>
+    <ul style="list-style: none;">
+      <li style="margin-bottom: 1rem;"><a href="#" style="text-decoration: none; color: var(--dark);">Products</a></li>
+      <li style="margin-bottom: 1rem;"><a href="#" style="text-decoration: none; color: var(--dark);">Templates</a></li>
+      <li style="margin-bottom: 1rem;"><a href="#" style="text-decoration: none; color: var(--dark);">Pricing</a></li>
+      <li style="margin-bottom: 1rem;"><a href="#" style="text-decoration: none; color: var(--dark);">Support</a></li>
+    </ul>
+  </div>
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+
+  <!-- Smooth Scroll Container (Locomotive) -->
+  <div id="smooth-scroll" data-scroll-container>
+    <!-- Hero Section -->
+    <section class="hero" data-scroll-section>
+      <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
+      <div class="hero-bg">
+        <div class="floating-card" data-scroll data-scroll-speed="2" style="width: 200px; height: 150px; top: 10%; left: 10%;"></div>
+        <div class="floating-card" data-scroll data-scroll-speed="-1.5" style="width: 150px; height: 200px; top: 50%; right: 15%;"></div>
+        <div class="floating-card" data-scroll data-scroll-speed="1" style="width: 180px; height: 180px; bottom: 20%; left: 30%;"></div>
+      </div>
+      <div class="hero-content" data-aos="fade-up">
+        <h1 id="heroTitle">Professional Video Assets for Modern Creators</h1>
+        <p id="heroSubtitle">10,000+ Premium effects, transitions, and templates to elevate your video production</p>
+        <div class="hero-buttons">
+          <button class="btn-primary" id="browseBtn">Browse Collection</button>
+          <button class="btn-secondary" id="demoBtn">Watch Demo Reel</button>
+        </div>
+      </div>
+      <div class="lottie-hero" id="lottieHero"></div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" data-scroll-section>
+      <div class="section-header" data-aos="fade-up">
+        <h2>Explore Categories</h2>
+        <p>Find the perfect assets for your next project</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="category-icon">🎨</div>
+          <div class="category-name">Color Grading</div>
+          <div class="category-count">500+ LUTs</div>
+        </div>
+        <div class="category-card" data-aos="fade-up" data-aos-delay="50">
+          <div class="category-icon">📸</div>
+          <div class="category-name">Transitions</div>
+          <div class="category-count">1200+ Effects</div>
+        </div>
+        <div class="category-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="category-icon">✨</div>
+          <div class="category-name">Visual Effects</div>
+          <div class="category-count">800+ VFX</div>
+        </div>
+        <div class="category-card" data-aos="fade-up" data-aos-delay="150">
+          <div class="category-icon">📝</div>
+          <div class="category-name">3D Texts</div>
+          <div class="category-count">300+ Styles</div>
+        </div>
+        <div class="category-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="category-icon">🎬</div>
+          <div class="category-name">Compositions</div>
+          <div class="category-count">450+ Presets</div>
+        </div>
+        <div class="category-card" data-aos="fade-up" data-aos-delay="250">
+          <div class="category-icon">🎯</div>
+          <div class="category-name">Motion Graphics</div>
+          <div class="category-count">600+ Assets</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="trusted" data-scroll-section>
+      <div class="trusted-container" data-aos="fade-up">
+        <h3>Trusted by teams at</h3>
+        <div class="logos">
+          <div class="logo-item" aria-label="Apple"><i class="fab fa-apple"></i></div>
+          <div class="logo-item" aria-label="Microsoft"><i class="fab fa-microsoft"></i></div>
+          <div class="logo-item" aria-label="Google"><i class="fab fa-google"></i></div>
+          <div class="logo-item" aria-label="Adobe"><i class="fab fa-adobe"></i></div>
+          <div class="logo-item" aria-label="Netflix"><i class="fab fa-netflix"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" data-scroll-section>
+      <div class="section-header" data-aos="fade-up">
+        <h2>Featured Products</h2>
+        <p>Hand-picked assets by our creative team</p>
+      </div>
+      <div class="products-container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar" data-aos="fade-right">
+          <div class="filter-section">
+            <h3 class="filter-title">Categories</h3>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-color-grading" checked />
+              <label for="filter-color-grading">Color Grading</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-transitions" checked />
+              <label for="filter-transitions">Transitions</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-3d-text" />
+              <label for="filter-3d-text">3D Text</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-effects" />
+              <label for="filter-effects">Effects</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-motion-graphics" />
+              <label for="filter-motion-graphics">Motion Graphics</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-text" />
+              <label for="filter-text">Text</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h3 class="filter-title">Price Range</h3>
+            <div class="price-range">
+              <input type="range" min="0" max="100" value="100" id="priceRange" />
+              <div class="price-values">
+                <span>$0</span>
+                <span id="maxPrice">$100</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h3 class="filter-title">Software</h3>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-premiere" checked />
+              <label for="filter-premiere">Premiere Pro</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-ae" checked />
+              <label for="filter-ae">After Effects</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-fcpx" />
+              <label for="filter-fcpx">Final Cut Pro X</label>
+            </div>
+            <div class="filter-option">
+              <input type="checkbox" id="filter-davinci" />
+              <label for="filter-davinci">DaVinci Resolve</label>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" data-scroll-section>
+      <div class="newsletter-content" data-aos="fade-up">
+        <h2>Stay Updated</h2>
+        <p>Get weekly updates on new assets and exclusive offers</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Enter your email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" data-scroll-section>
+      <div class="footer-content">
+        <div class="footer-section" data-aos="fade-up">
+          <h4>VFXHUB</h4>
+          <p>Professional video assets marketplace for modern creators</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-section" data-aos="fade-up" data-aos-delay="50">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="#">Color Grading</a></li>
+            <li><a href="#">Transitions</a></li>
+            <li><a href="#">3D Texts</a></li>
+            <li><a href="#">Visual Effects</a></li>
+            <li><a href="#">Motion Graphics</a></li>
+          </ul>
+        </div>
+        <div class="footer-section" data-aos="fade-up" data-aos-delay="100">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Affiliates</a></li>
+          </ul>
+        </div>
+        <div class="footer-section" data-aos="fade-up" data-aos-delay="150">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Refund Policy</a></li>
+            <li><a href="#">License Agreement</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 VFXHUB. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Shopping Cart Dropdown -->
+  <div class="cart-dropdown" id="cartDropdown">
+    <div class="cart-header">
+      <h3 class="cart-title">Shopping Cart</h3>
+      <span class="cart-close" onclick="toggleCart()">×</span>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-summary">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <div class="cart-actions">
+        <button class="btn-view-cart">View Cart</button>
+        <button class="btn-checkout">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Modal -->
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <div class="product-modal">
+        <div class="modal-preview">
+          <i class="fas fa-play-circle" style="font-size: 4rem; color: white;"></i>
+        </div>
+        <div class="modal-info">
+          <h2 id="modalTitle">Product Title</h2>
+          <div class="modal-rating">
+            <div class="product-rating">
+              <i class="fas fa-star star"></i>
+              <i class="fas fa-star star"></i>
+              <i class="fas fa-star star"></i>
+              <i class="fas fa-star star"></i>
+              <i class="fas fa-star star"></i>
+            </div>
+            <span>(245 reviews)</span>
+          </div>
+          <div class="modal-price" id="modalPrice">$29.99</div>
+          <ul class="modal-features">
+            <li><i class="fas fa-check"></i> 4K Resolution Support</li>
+            <li><i class="fas fa-check"></i> Compatible with all major editing software</li>
+            <li><i class="fas fa-check"></i> Lifetime updates included</li>
+            <li><i class="fas fa-check"></i> Commercial license</li>
+            <li><i class="fas fa-check"></i> 24/7 Support</li>
+          </ul>
+          <div class="modal-actions">
+            <button class="btn-primary" style="flex: 1;" id="modalAdd">Add to Cart</button>
+            <button class="btn-secondary" style="flex: 1;">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Added to cart successfully!</span>
+  </div>
+
+  <!-- Vendor Scripts -->
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <!-- Locomotive Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+  <!-- Lottie -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <!-- Motion One (Framer Motion-like for Web) -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@10.16.4/dist/motion.min.js"></script>
+
+  <script>
+    // =====================================
+    // Products data
+    // =====================================
+    const products = [
+      { id: 1, title: "Cinematic Color Grading Pack", category: "Color Grading", description: "Professional LUTs for cinematic look", price: 29.99, originalPrice: 39.99, rating: 4.5, reviews: 234, badge: "SALE", software: ["premiere", "ae", "davinci"] },
+      { id: 2, title: "Glitch Transitions Bundle", category: "Transitions", description: "Modern glitch effects for dynamic edits", price: 19.99, originalPrice: null, rating: 5, reviews: 189, badge: "NEW", software: ["premiere", "ae"] },
+      { id: 3, title: "3D Text Animation Presets", category: "3D Text", description: "Stunning 3D text animations", price: 39.99, originalPrice: 49.99, rating: 4.8, reviews: 156, badge: "HOT", software: ["ae"] },
+      { id: 4, title: "Particle Effects Collection", category: "Effects", description: "High-quality particle simulations", price: 34.99, originalPrice: null, rating: 4.7, reviews: 298, badge: null, software: ["ae", "davinci"] },
+      { id: 5, title: "Smooth Transitions Pack", category: "Transitions", description: "Seamless transitions for any project", price: 24.99, originalPrice: 34.99, rating: 4.6, reviews: 412, badge: "SALE", software: ["premiere", "fcpx"] },
+      { id: 6, title: "Film Grain Overlays", category: "Effects", description: "Authentic film grain textures", price: 15.99, originalPrice: null, rating: 4.4, reviews: 178, badge: null, software: ["premiere", "ae", "fcpx", "davinci"] },
+      { id: 7, title: "Motion Graphics Elements", category: "Motion Graphics", description: "Essential motion design elements", price: 44.99, originalPrice: 59.99, rating: 4.9, reviews: 523, badge: "POPULAR", software: ["ae"] },
+      { id: 8, title: "Light Leaks Collection", category: "Effects", description: "Organic light leak overlays", price: 22.99, originalPrice: null, rating: 4.3, reviews: 267, badge: null, software: ["premiere", "ae", "fcpx", "davinci"] },
+      { id: 9, title: "Corporate Titles Pack", category: "Text", description: "Professional titles for business videos", price: 32.99, originalPrice: 42.99, rating: 4.7, reviews: 189, badge: "SALE", software: ["premiere", "ae"] }
+    ];
+
+    // =====================================
+    // State & Persistence
+    // =====================================
+    let cart = [];
+    let filteredProducts = [...products];
+
+    function saveCart() {
+      try { localStorage.setItem('vfxhub_cart', JSON.stringify(cart)); } catch (e) {}
+    }
+    function loadCart() {
+      try {
+        const raw = localStorage.getItem('vfxhub_cart');
+        if (raw) cart = JSON.parse(raw) || [];
+      } catch (e) {}
+    }
+
+    // =====================================
+    // Rendering & UI
+    // =====================================
+    function renderProducts(list = filteredProducts) {
+      const productsGrid = document.getElementById('productsGrid');
+      productsGrid.innerHTML = '';
+      list.forEach(product => productsGrid.appendChild(createProductCard(product)));
+      // Re-apply AOS to new nodes
+      if (window.AOS) AOS.refreshHard();
+    }
+
+    function createProductCard(product) {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.setAttribute('data-aos', 'fade-up');
+      const badgeHtml = product.badge ? `<span class="product-badge">${product.badge}</span>` : '';
+      const originalPriceHtml = product.originalPrice ? `<span class="price-original">$${product.originalPrice}</span>` : '';
+      card.innerHTML = `
+        <div class="product-preview">
+          ${badgeHtml}
+          <div class="play-icon"><i class="fas fa-play"></i></div>
+          <video class="product-video" muted loop>
+            <source src="preview.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="product-info">
+          <div class="product-category">${product.category}</div>
+          <h3 class="product-title">${product.title}</h3>
+          <p class="product-description">${product.description}</p>
+          <div class="product-meta">
+            <div class="product-rating">${generateStars(product.rating)}<span class="rating-count">(${product.reviews})</span></div>
+            <div class="product-price"><span class="price-current">$${product.price}</span>${originalPriceHtml}</div>
+          </div>
+          <div class="product-actions">
+            <button class="btn-add-cart" onclick="addToCart(${product.id})"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+            <button class="btn-quick-view" onclick="showProductModal(${product.id})"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    function generateStars(rating) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= rating) stars += '<i class="fas fa-star star"></i>';
+        else if (i - 0.5 <= rating) stars += '<i class="fas fa-star-half-alt star"></i>';
+        else stars += '<i class="far fa-star star"></i>';
+      }
+      return stars;
+    }
+
+    // =====================================
+    // Cart
+    // =====================================
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) existingItem.quantity++;
+      else cart.push({ ...product, quantity: 1 });
+      updateCart();
+      showToast('Product added to cart!');
+    }
+
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCart();
+      showToast('Product removed from cart');
+    }
+
+    function updateCart() {
+      updateCartCount();
+      updateCartDropdown();
+      saveCart();
+    }
+
+    function updateCartCount() {
+      const cartCount = document.getElementById('cartCount');
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+    }
+
+    function updateCartDropdown() {
+      const cartItems = document.getElementById('cartItems');
+      const cartTotal = document.getElementById('cartTotal');
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="text-align: center; color: var(--gray);">Your cart is empty</p>';
+        cartTotal.textContent = '$0.00';
+        return;
+      }
+      let html = '';
+      let total = 0;
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        html += `
+          <div class="cart-item">
+            <div class="cart-item-image"></div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.title}</div>
+              <div class="cart-item-price">$${item.price} x ${item.quantity}</div>
+            </div>
+            <div class="cart-item-remove" onclick="removeFromCart(${item.id})"><i class="fas fa-trash"></i></div>
+          </div>
+        `;
+      });
+      cartItems.innerHTML = html;
+      cartTotal.textContent = `$${total.toFixed(2)}`;
+    }
+
+    function toggleCart() {
+      const cartDropdown = document.getElementById('cartDropdown');
+      cartDropdown.classList.toggle('active');
+    }
+
+    // =====================================
+    // Filters & Search
+    // =====================================
+    function getActiveFilters() {
+      const selectedCategories = [];
+      if (document.getElementById('filter-color-grading')?.checked) selectedCategories.push('Color Grading');
+      if (document.getElementById('filter-transitions')?.checked) selectedCategories.push('Transitions');
+      if (document.getElementById('filter-3d-text')?.checked) selectedCategories.push('3D Text');
+      if (document.getElementById('filter-effects')?.checked) selectedCategories.push('Effects');
+      if (document.getElementById('filter-motion-graphics')?.checked) selectedCategories.push('Motion Graphics');
+      if (document.getElementById('filter-text')?.checked) selectedCategories.push('Text');
+
+      const software = [];
+      if (document.getElementById('filter-premiere')?.checked) software.push('premiere');
+      if (document.getElementById('filter-ae')?.checked) software.push('ae');
+      if (document.getElementById('filter-fcpx')?.checked) software.push('fcpx');
+      if (document.getElementById('filter-davinci')?.checked) software.push('davinci');
+
+      const priceMax = parseFloat(document.getElementById('priceRange')?.value || '100');
+      const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
+
+      return { selectedCategories, software, priceMax, q };
+    }
+
+    function filterProducts() {
+      const { selectedCategories, software, priceMax, q } = getActiveFilters();
+      filteredProducts = products.filter(p => {
+        const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(p.category);
+        const matchesSoftware = software.length === 0 || p.software.some(s => software.includes(s));
+        const matchesPrice = p.price <= priceMax;
+        const matchesQuery = q === '' || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+        return matchesCategory && matchesSoftware && matchesPrice && matchesQuery;
+      });
+      renderProducts(filteredProducts);
+    }
+
+    function setupFilters() {
+      const filterIds = [
+        'filter-color-grading','filter-transitions','filter-3d-text','filter-effects','filter-motion-graphics','filter-text',
+        'filter-premiere','filter-ae','filter-fcpx','filter-davinci','priceRange'
+      ];
+      filterIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const eventName = id === 'priceRange' ? 'input' : 'change';
+        el.addEventListener(eventName, filterProducts);
+      });
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.addEventListener('input', debounce(filterProducts, 200));
+    }
+
+    function debounce(fn, delay) {
+      let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), delay); };
+    }
+
+    // =====================================
+    // Modal & Misc UI
+    // =====================================
+    function showProductModal(productId) {
+      const product = products.find(p => p.id === productId);
+      const modal = document.getElementById('productModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalPrice = document.getElementById('modalPrice');
+      const modalAdd = document.getElementById('modalAdd');
+      modalTitle.textContent = product.title;
+      modalPrice.textContent = `$${product.price}`;
+      modalAdd.onclick = () => addToCart(productId);
+      modal.classList.add('active');
+    }
+    function closeModal() { document.getElementById('productModal').classList.remove('active'); }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      const overlay = document.getElementById('mobileMenuOverlay');
+      mobileMenu.classList.toggle('active');
+      overlay.classList.toggle('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        const cartDropdown = document.getElementById('cartDropdown');
+        cartDropdown.classList.remove('active');
+      }
+    });
+
+    // =====================================
+    // Animations: AOS, GSAP+ScrollTrigger, Locomotive, Motion One
+    // =====================================
+    let locoScroll;
+    function initAOS() { if (window.AOS) AOS.init({ once: true, duration: 700, easing: 'ease-out-cubic' }); }
+
+    function initLocomotiveAndGSAP() {
+      const scrollContainer = document.querySelector('#smooth-scroll');
+      if (!scrollContainer) return;
+
+      // Init Locomotive Scroll
+      locoScroll = new LocomotiveScroll({
+        el: scrollContainer,
+        smooth: true,
+        smartphone: { smooth: true },
+        tablet: { smooth: true }
+      });
+
+      // Update ScrollTrigger on Locomotive scroll
+      locoScroll.on('scroll', ScrollTrigger.update);
+
+      // Setup scrollerProxy
+      ScrollTrigger.scrollerProxy(scrollContainer, {
+        scrollTop(value) {
+          return arguments.length ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true }) : locoScroll.scroll.instance.scroll.y;
+        },
+        getBoundingClientRect() { return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }; },
+        pinType: scrollContainer.style.transform ? 'transform' : 'fixed'
+      });
+
+      // Animate hero content
+      gsap.from('#heroTitle', { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out' });
+      gsap.from('#heroSubtitle', { y: 30, opacity: 0, duration: 0.8, delay: 0.1, ease: 'power3.out' });
+      gsap.from('.hero-buttons', { y: 20, opacity: 0, duration: 0.8, delay: 0.2, ease: 'power3.out' });
+
+      // Parallax floating cards via ScrollTrigger as a fallback to data-scroll-speed
+      gsap.utils.toArray('.floating-card').forEach((el, i) => {
+        gsap.to(el, { yPercent: i % 2 ? -20 : 20, ease: 'none', scrollTrigger: { trigger: el, scroller: scrollContainer, scrub: true, start: 'top bottom', end: 'bottom top' } });
+      });
+
+      // Nav style on scroll
+      ScrollTrigger.create({
+        scroller: scrollContainer,
+        start: 10,
+        onEnter: () => document.getElementById('navbar').classList.add('scrolled'),
+        onLeaveBack: () => document.getElementById('navbar').classList.remove('scrolled')
+      });
+
+      // Refresh handling
+      ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
+      ScrollTrigger.refresh();
+    }
+
+    function initMotionOne() {
+      const Motion = window.Motion || {};
+      const { animate, spring } = Motion;
+      const browseBtn = document.getElementById('browseBtn');
+      const demoBtn = document.getElementById('demoBtn');
+      if (animate && browseBtn) {
+        browseBtn.addEventListener('mouseenter', () => animate(browseBtn, { scale: 1.03 }, { duration: 0.2 }));
+        browseBtn.addEventListener('mouseleave', () => animate(browseBtn, { scale: 1 }, { duration: 0.2 }));
+      }
+      if (animate && demoBtn) {
+        demoBtn.addEventListener('mouseenter', () => animate(demoBtn, { scale: 1.03 }, { duration: 0.2 }));
+        demoBtn.addEventListener('mouseleave', () => animate(demoBtn, { scale: 1 }, { duration: 0.2 }));
+      }
+    }
+
+    // =====================================
+    // Three.js Background (simple particle field)
+    // =====================================
+    function initThreeHero() {
+      const canvas = document.getElementById('heroCanvas');
+      if (!canvas || !window.THREE) return;
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        renderer.setSize(rect.width, rect.height, false);
+        camera.aspect = rect.width / rect.height; camera.updateProjectionMatrix();
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      camera.position.z = 120;
+      const geometry = new THREE.BufferGeometry();
+      const num = 1200;
+      const positions = new Float32Array(num * 3);
+      for (let i = 0; i < num; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 300;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 200;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+      }
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const material = new THREE.PointsMaterial({ color: 0xffffff, size: 1.2, transparent: true, opacity: 0.6 });
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      let t = 0;
+      function animate() {
+        t += 0.0015;
+        points.rotation.y = t * 2;
+        points.rotation.x = Math.sin(t) * 0.1;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // =====================================
+    // Lottie Hero Accent
+    // =====================================
+    function initLottieHero() {
+      const container = document.getElementById('lottieHero');
+      if (!container || !window.lottie) return;
+      try {
+        window.lottie.loadAnimation({
+          container,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          // Lightweight abstract animation; replace with your own JSON if desired
+          path: 'https://assets5.lottiefiles.com/packages/lf20_5ngs2ksb.json'
+        });
+      } catch (e) { /* ignore */ }
+    }
+
+    // =====================================
+    // Init
+    // =====================================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Navbar scroll effect fallback
+      window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled');
+      });
+
+      // Load cart from persistence
+      loadCart();
+      updateCart();
+
+      // Setup filters & render
+      setupFilters();
+      renderProducts(products);
+
+      // Price range live label
+      const priceRange = document.getElementById('priceRange');
+      const maxPrice = document.getElementById('maxPrice');
+      if (priceRange && maxPrice) priceRange.addEventListener('input', (e) => { maxPrice.textContent = `$${e.target.value}`; });
+
+      // Newsletter form
+      const newsletterForm = document.querySelector('.newsletter-form');
+      if (newsletterForm) newsletterForm.addEventListener('submit', (e) => { e.preventDefault(); showToast('Successfully subscribed to newsletter!'); e.target.reset(); });
+
+      // Hero buttons
+      document.getElementById('browseBtn')?.addEventListener('click', () => {
+        // Scroll to products
+        const container = document.querySelector('#smooth-scroll');
+        const productsSection = document.querySelector('.products-section');
+        if (locoScroll) locoScroll.scrollTo(productsSection, { offset: -80 }); else productsSection.scrollIntoView({ behavior: 'smooth' });
+      });
+      document.getElementById('demoBtn')?.addEventListener('click', () => showToast('Playing demo reel...'));
+
+      // Init animations
+      initAOS();
+      initMotionOne();
+      initThreeHero();
+      initLocomotiveAndGSAP();
+    });
+  </script>
+</body>
+</html>
